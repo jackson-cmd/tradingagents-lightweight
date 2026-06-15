@@ -1,0 +1,10 @@
+yfinance>=0.2.40
+pandas>=2.0
+numpy>=1.24
+feedparser>=6.0
+finvizfinance>=1.0
+matplotlib>=3.7
+python-dotenv>=1.0
+# Optional - only needed if you turn the LLM layer on:
+openai>=1.40
+anthropic>=0.34

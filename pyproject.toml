@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tradingagents-lightweight"
+version = "0.1.0"
+description = "A fast, cheap, momentum-first swing trading agent."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "yfinance>=0.2.40",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "feedparser>=6.0",
+    "finvizfinance>=1.0",
+    "matplotlib>=3.7",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+llm = ["openai>=1.40", "anthropic>=0.34"]
+alpaca = ["alpaca-py>=0.20"]
+
+[project.scripts]
+talite = "talite.cli:main"
+
+[tool.setuptools]
+packages = ["talite"]
