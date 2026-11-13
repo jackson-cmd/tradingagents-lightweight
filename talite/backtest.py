@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from . import config, data
-from .strategy import generate_signal, get_alpha
+from .strategy import get_alpha
 
 TRADING_DAYS_PER_MONTH = 21
 

@@ -1,0 +1,14 @@
+name: Feature request / 功能需求
+description: Suggest a feature, a data source, an integration or better docs / 建议新功能、数据源、集成或改进文档
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like? / 你希望增加什么？
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What would it let you do? / 有了它你能做什么？

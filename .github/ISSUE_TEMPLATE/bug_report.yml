@@ -1,0 +1,21 @@
+name: Bug report / 问题反馈
+description: Something does not work as described / 功能和描述不一致
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened? / 发生了什么？
+      description: The command or steps, what you expected, what you got. Remove API keys, tokens and account numbers. / 运行的命令或步骤、预期结果、实际结果。请删掉 API key、token 和账户号。
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / 版本
+      description: Output of `talite --version` and `python --version` / `talite --version` 和 `python --version` 的输出
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system / 操作系统
+      options: [macOS, Linux, Windows, Docker, Codespaces, other / 其他]

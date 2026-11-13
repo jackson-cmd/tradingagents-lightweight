@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import argparse
 
-from . import config
+from . import __version__, config
 
 
 def _route_order(decision, args):
@@ -115,6 +115,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="talite",
         description="TradingAgents-Lightweight: momentum-first swing signals.")
+    p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("screen", help="auto-pick momentum names from Finviz")
