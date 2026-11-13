@@ -1,5 +1,7 @@
 # TradingAgents-Lightweight（轻量版）
 
+[![CI](https://github.com/jackson-cmd/tradingagents-lightweight/actions/workflows/ci.yml/badge.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/actions/workflows/ci.yml) [![PyPI](https://img.shields.io/pypi/v/tradingagents-lightweight?color=e5534b)](https://pypi.org/project/tradingagents-lightweight/) [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776ab.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea043.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/LICENSE) [![Docker image](https://img.shields.io/badge/docker-ghcr.io-2496ed.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/pkgs/container/tradingagents-lightweight)
+
 一个快速、便宜、以动量为先的摆动交易 agent。它自动筛动量股，用透明的规则引擎打分，
 再结合新闻和基本面，给出带入场价、ATR 止损和固定 1:2 目标的 BUY/SELL/HOLD。
 LLM 层是可选的——没有任何 API key 也能免费跑。
@@ -80,35 +82,40 @@ LLM 层是可选的——没有任何 API key 也能免费跑。
 ## 安装
 
 ```bash
-git clone https://github.com/jackson-cmd/tradingagents-lightweight.git
-cd tradingagents-lightweight
-
-python -m venv .venv
-source .venv/bin/activate      # Windows：.venv\Scripts\activate
-
-pip install -r requirements.txt   # 或者：pip install -e .  （多出 `talite` 命令）
+pip install tradingagents-lightweight          # 或者：pipx install tradingagents-lightweight
+pip install "tradingagents-lightweight[llm]"   # 连同可选的 LLM 层一起装
 ```
 
-Python 3.9+。开箱即用，不需要任何 key——纯规则免费跑。
+Python 3.10+。开箱即用，不需要任何 key——纯规则免费跑。
 
 ```bash
-python -m talite screen                 # 自动选动量票
-python -m talite analyze NVDA --no-llm  # 单票，免费
-python -m talite backtest               # 回测默认篮子
+talite screen                 # 自动选动量票
+talite analyze NVDA --no-llm  # 单票，免费
+talite backtest               # 回测默认篮子
+talite --version
 ```
 
-跑了 `pip install -e .` 后可以省掉 `python -m`，直接 `talite screen` 等。
+什么都不想装：`uvx tradingagents-lightweight screen` 会在临时环境里直接跑。
+
+想改代码就从源码装：
+
+```bash
+git clone https://github.com/jackson-cmd/tradingagents-lightweight.git
+cd tradingagents-lightweight
+python -m venv .venv
+source .venv/bin/activate      # Windows：.venv\Scripts\activate
+pip install -e ".[llm,dev]"
+```
 
 ## Docker
 
 ```bash
-docker build -t talite .
-docker run --rm talite screen
-docker run --rm -e OPENAI_API_KEY=$OPENAI_API_KEY talite analyze NVDA
-docker run --rm -v "$PWD/results:/app/results" talite backtest
+docker run --rm ghcr.io/jackson-cmd/tradingagents-lightweight screen
+docker run --rm -e OPENAI_API_KEY=$OPENAI_API_KEY ghcr.io/jackson-cmd/tradingagents-lightweight analyze NVDA
+docker run --rm -v "$PWD/results:/app/results" ghcr.io/jackson-cmd/tradingagents-lightweight backtest
 ```
 
-用 `-e` 传 key，或者 `--env-file .env` 挂一个环境文件。
+用 `-e` 传 key，或者 `--env-file .env` 挂一个环境文件。想自己构建镜像：`docker build -t talite .`
 
 ## 自动选股
 

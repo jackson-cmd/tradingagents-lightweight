@@ -1,0 +1,14 @@
+# Keeps the GitHub Actions in .github/workflows on their current major versions, in one pull request at most once a
+# month. Vulnerable Python packages are handled separately by Dependabot security updates, which open a pull request
+# as soon as an advisory appears.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "CI"

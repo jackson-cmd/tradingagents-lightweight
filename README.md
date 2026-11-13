@@ -1,11 +1,13 @@
 # TradingAgents-Lightweight
 
+[![CI](https://github.com/jackson-cmd/tradingagents-lightweight/actions/workflows/ci.yml/badge.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/actions/workflows/ci.yml) [![PyPI](https://img.shields.io/pypi/v/tradingagents-lightweight?color=e5534b)](https://pypi.org/project/tradingagents-lightweight/) [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776ab.svg)](https://www.python.org/) [![License: MIT](https://img.shields.io/badge/license-MIT-2ea043.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/LICENSE) [![Docker image](https://img.shields.io/badge/docker-ghcr.io-2496ed.svg)](https://github.com/jackson-cmd/tradingagents-lightweight/pkgs/container/tradingagents-lightweight)
+
 A fast, cheap, momentum-first swing-trading agent. It screens for momentum
 stocks, scores them with a transparent rule engine, checks news and
 fundamentals, and returns a BUY/SELL/HOLD with an entry, an ATR stop, and a
 fixed 1:2 target. The LLM layer is optional — it runs free with no API keys.
 
-English | [中文](README.zh-CN.md)
+English | [中文](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/README.zh-CN.md)
 
 The whole chain — data, screening, scoring, position sizing — is a few hundred
 lines of readable Python you can fork and adapt.
@@ -98,35 +100,40 @@ Drop the LLM and you still get a complete, deterministic decision.
 ## Install
 
 ```bash
-git clone https://github.com/jackson-cmd/tradingagents-lightweight.git
-cd tradingagents-lightweight
-
-python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
-
-pip install -r requirements.txt   # or: pip install -e .  (adds the `talite` command)
+pip install tradingagents-lightweight          # or: pipx install tradingagents-lightweight
+pip install "tradingagents-lightweight[llm]"   # with the optional LLM layer
 ```
 
-Python 3.9+. No API key needed to start — it runs the rules for free.
+Python 3.10+. No API key needed to start — it runs the rules for free.
 
 ```bash
-python -m talite screen                 # auto-pick momentum names
-python -m talite analyze NVDA --no-llm  # one ticker, free
-python -m talite backtest               # backtest the default basket
+talite screen                 # auto-pick momentum names
+talite analyze NVDA --no-llm  # one ticker, free
+talite backtest               # backtest the default basket
+talite --version
 ```
 
-With `pip install -e .` you can drop `python -m` and just run `talite screen`, etc.
+Nothing to install: `uvx tradingagents-lightweight screen` runs it in a throwaway environment.
+
+From source, to change the code:
+
+```bash
+git clone https://github.com/jackson-cmd/tradingagents-lightweight.git
+cd tradingagents-lightweight
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -e ".[llm,dev]"
+```
 
 ## Docker
 
 ```bash
-docker build -t talite .
-docker run --rm talite screen
-docker run --rm -e OPENAI_API_KEY=$OPENAI_API_KEY talite analyze NVDA
-docker run --rm -v "$PWD/results:/app/results" talite backtest
+docker run --rm ghcr.io/jackson-cmd/tradingagents-lightweight screen
+docker run --rm -e OPENAI_API_KEY=$OPENAI_API_KEY ghcr.io/jackson-cmd/tradingagents-lightweight analyze NVDA
+docker run --rm -v "$PWD/results:/app/results" ghcr.io/jackson-cmd/tradingagents-lightweight backtest
 ```
 
-Pass keys with `-e`, or mount an env file with `--env-file .env`.
+Pass keys with `-e`, or mount an env file with `--env-file .env`. To build the image yourself: `docker build -t talite .`
 
 ## Auto stock picking
 
@@ -140,7 +147,7 @@ talite screen --top 5 --execute  # screen, analyze, paper-trade the BUYs
 The default filters keep it to liquid, non-penny names in a confirmed uptrend
 (above the 20- and 50-day, up on the quarter), then rank by a blend of
 weekly/monthly/quarterly strength. Tune the filters and weights in
-[`talite/screener.py`](talite/screener.py).
+[`talite/screener.py`](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/talite/screener.py).
 
 ## Backtest
 
@@ -206,7 +213,7 @@ talite analyze HPE --execute --broker alpaca --live   # ...for real
 Paper is the default and writes to `results/paper_orders.csv` — nothing leaves
 your machine. The Alpaca adapter places a one-shot bracket (entry + 1:2
 take-profit + stop-loss) and defaults to the paper endpoint; `--live` is the only
-thing that arms it. Sizing lives in [`talite/execution.py`](talite/execution.py).
+thing that arms it. Sizing lives in [`talite/execution.py`](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/talite/execution.py).
 
 ## Choose your model
 
@@ -292,4 +299,4 @@ Paper-trade before you risk a cent.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](https://github.com/jackson-cmd/tradingagents-lightweight/blob/main/LICENSE).
